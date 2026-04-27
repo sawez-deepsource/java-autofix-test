@@ -10,38 +10,33 @@ public class FlexibleCtorViolations {
         public void doWork() { System.out.println(name); }
     }
 
-    // JEP 513: statements before super()
+    // Violations inside class with flexible constructor
     static class Child extends Base {
         Child(String name) {
-            if (name == null) throw new IllegalArgumentException("null name");
+            if (name == null) throw new IllegalArgumentException();
             String trimmed = name.trim();
             super(trimmed);
         }
 
-        // UselessMethod
+        // Useless override
         @Override
         public void doWork() {
             super.doWork();
         }
+
+        // Array toString inside flexible ctor class
+        void debug(int[] data) {
+            System.out.println(data.toString());
+        }
+
+        // Concrete collection
+        public ArrayList<String> getNames() {
+            return new ArrayList<>();
+        }
     }
 
     // ThrowsThrowable
-    void process() throws Exception {
-        System.out.println("processing");
-    }
-
-    // SelfAssignment
-    void bug(int x) {
-        x = x;
-    }
-
-    // BadArrayToString
-    void printData(int[] data) {
-        System.out.println(data.toString());
-    }
-
-    // ConcreteCollectionType
-    public ArrayList<String> getNames() {
-        return new ArrayList<>();
+    void risky() throws Exception {
+        System.out.println("risky");
     }
 }
